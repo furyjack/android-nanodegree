@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.example.lakshay.myappportfolio.MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:background="#448AFF"
+        android:elevation="2dp"
+        android:clipToPadding="true"
+
+        android:id="@+id/toolbar"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.Toolbar>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Nanodegree Apps!!"
+        android:textSize="20sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:id="@+id/textView" />
+
+    <Button
+        android:layout_width="220dp"
+        android:onClick="onbclick"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_popmov"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#FFFFFF"
+        android:text="popular movies"
+        android:layout_marginTop="20dp"
+        />
+
+    <Button
+        android:layout_width="220dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#FFFFFF"
+        android:onClick="onbclick"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_popmov"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_stkhawk"
+        android:text="Stock hawk"
+        android:layout_marginTop="8dp"
+        />
+    <Button
+        android:layout_width="220dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#FFFFFF"
+        android:onClick="onbclick"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_stkhawk"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_bib"
+        android:text="build it bigger"
+        android:layout_marginTop="8dp"
+        />
+    <Button
+        android:layout_width="220dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#FFFFFF"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_bib"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_mkappmaterial"
+        android:onClick="onbclick"
+        android:text="make your app material"
+        android:layout_marginTop="8dp"
+        />
+    <Button
+        android:layout_width="220dp"
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#FFFFFF"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_mkappmaterial"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_goubiquit"
+        android:onClick="onbclick"
+        android:text="go ubiquitous"
+        android:layout_marginTop="8dp"
+        />
+    <Button
+        android:background="@color/colorPrimaryDark"
+        android:textColor="#FFFFFF"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_goubiquit"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_cpstn"
+        android:onClick="onbclick"
+        android:text="capstone"
+        android:layout_marginTop="8dp"
+        />
+
+
+
+
+
+</RelativeLayout>
