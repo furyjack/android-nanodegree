@@ -7,7 +7,7 @@
     <string name="query_top">
             https://api.themoviedb.org/3/movie/top_rated?api_key=a444d7a7a662a5a702515b3735ee4f49&amp;language=en-US</string>
     <string name="list_key">ordertype</string>
-    <string name="dialog_message">We could not connect you to server please try again later:)</string>
+    <string name="dialog_message">We could not connect you to server please try again later,press okay to exit:)</string>
     <string name="dialog_title">OOPS!</string>
     <string name="ok">Okay</string>
 </resources>

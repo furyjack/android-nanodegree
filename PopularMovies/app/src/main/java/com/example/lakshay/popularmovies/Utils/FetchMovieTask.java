@@ -25,6 +25,11 @@ public class FetchMovieTask extends AsyncTask<String,Void,ArrayList<Movie>>{
     private String json=null;
     private ArrayList<Movie> mlist=new ArrayList<>();
 
+    private  TaskFinishedListner response=null;
+
+    public FetchMovieTask(TaskFinishedListner response) {
+        this.response = response;
+    }
 
     @Override
     protected ArrayList<Movie> doInBackground(String[] params) {
@@ -98,5 +103,16 @@ public class FetchMovieTask extends AsyncTask<String,Void,ArrayList<Movie>>{
 
 
         return mlist;
+    }
+
+    public interface TaskFinishedListner {
+        void processFinish(ArrayList<Movie> output);
+    }
+
+    @Override
+    protected void onPostExecute(ArrayList<Movie> movies) {
+        response.processFinish(movies);
+        super.onPostExecute(movies);
+
     }
 }

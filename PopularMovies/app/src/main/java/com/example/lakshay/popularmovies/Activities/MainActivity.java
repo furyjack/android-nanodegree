@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -27,9 +26,8 @@ import com.example.lakshay.popularmovies.R;
 import com.example.lakshay.popularmovies.Utils.FetchMovieTask;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FetchMovieTask.TaskFinishedListner {
 
     GridView Gvpos;
     MovieAdapter adapter;
@@ -74,14 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setListView() {
         Gvpos = (GridView) findViewById(R.id.gv_movpos);
-        progressBar = (ProgressBar) findViewById(R.id.pbar);
-        Gvpos.setVisibility(View.INVISIBLE);
-        try {
-            mlist = new FetchMovieTask().execute(query).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        Gvpos.setVisibility(View.VISIBLE);
         adapter = new MovieAdapter(mlist, getApplicationContext());
         Gvpos.setAdapter(adapter);
         Gvpos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -94,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        progressBar.setVisibility(View.INVISIBLE);
 
+        progressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -114,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        progressBar.setVisibility(View.INVISIBLE);
 
 
     }
@@ -152,21 +143,32 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SetToolbar();
+        progressBar = (ProgressBar) findViewById(R.id.pbar);
+        prev_pref=getPref();
         save_state=savedInstanceState;
+
 
 
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        outState.putParcelableArrayList("mlist",mlist);
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        save_state=savedInstanceState;
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList("mlist",mlist);
+        super.onSaveInstanceState(outState);
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
         String choice = getPref();
+        progressBar.setVisibility(View.VISIBLE);
         if(save_state==null)
         save_state = getIntent().getExtras();
         if (choice.equals(prev_pref) && save_state != null && save_state.containsKey("mlist")) {
@@ -175,7 +177,8 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         if (isNetworkAvailable() && isOnline()) {
-            setListView();
+            new FetchMovieTask(this).execute(query);
+
             prev_pref = choice;
         } else {
             prev_pref = choice;
@@ -205,6 +208,14 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.setting) {
             startActivity(new Intent(this, PrefActivity.class));
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void processFinish(ArrayList<Movie> output) {
+        mlist=output;
+        setListView();
+
     }
 }
