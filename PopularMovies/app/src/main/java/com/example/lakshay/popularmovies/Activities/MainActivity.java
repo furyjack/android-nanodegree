@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -151,16 +152,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SetToolbar();
+        save_state=savedInstanceState;
 
 
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putParcelableArrayList("mlist",mlist);
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
         String choice = getPref();
+        if(save_state==null)
         save_state = getIntent().getExtras();
         if (choice.equals(prev_pref) && save_state != null && save_state.containsKey("mlist")) {
             setOldListView();
