@@ -49,6 +49,10 @@ public class DetailActivity extends AppCompatActivity {
         Tvplot.setText(plot);
         Tvdate.setText(date);
         Tvrating.setText(rating);
+        int ind=posterpath.indexOf("w");
+        String prec=posterpath.substring(0,ind);
+        prec=prec+"w320";
+        posterpath=prec+posterpath.substring(ind+4);
         Picasso.with(this).load(posterpath).fit().into(IvPoster);
 
 
