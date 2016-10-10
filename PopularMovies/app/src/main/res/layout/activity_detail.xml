@@ -45,6 +45,7 @@
                 android:layout_height="200dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="16dp"
+
                 android:layout_weight="1" />
 
             <LinearLayout
@@ -71,6 +72,15 @@
                     android:layout_marginTop="16dp"
                     android:text="9.1/10"
                     android:textSize="24sp"
+
+                    />
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/starstyle"
+                    android:layout_marginLeft="40dp"
+                    android:background="@android:drawable/btn_star"
 
                     />
             </LinearLayout>

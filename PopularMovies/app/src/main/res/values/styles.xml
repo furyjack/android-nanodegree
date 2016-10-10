@@ -8,4 +8,9 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="starstyle">
+        <item name="android:background">@android:drawable/btn_star_big_off</item>
+        <item name="android:button">@android:drawable/btn_star</item>
+    </style>
+
 </resources>
