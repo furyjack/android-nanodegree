@@ -4,8 +4,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lakshay.popularmovies.Models.Movie;
 import com.example.lakshay.popularmovies.R;
@@ -17,7 +22,8 @@ public class DetailActivity extends AppCompatActivity {
     ImageView IvPoster;
     String Title, plot, posterpath, date, rating;
     Toolbar mtoolbar;
-
+    CheckBox Cbfav;
+    LinearLayout rootview;
     private void SetToolbar() {
         mtoolbar = (Toolbar) findViewById(R.id.tb_detail);
         mtoolbar.canShowOverflowMenu();
@@ -34,11 +40,13 @@ public class DetailActivity extends AppCompatActivity {
 
     private void setView() {
 
+        rootview=(LinearLayout)findViewById(R.id.activity_detail);
         TvTitle = (TextView) findViewById(R.id.tv_title);
         Tvplot = (TextView) findViewById(R.id.tv_plot);
         Tvdate = (TextView) findViewById(R.id.tv_year);
         Tvrating = (TextView) findViewById(R.id.tv_rating);
         IvPoster = (ImageView) findViewById(R.id.im_de_pos);
+        Cbfav=(CheckBox)findViewById(R.id.cb_fav);
         Movie obj = getIntent().getParcelableExtra("object");
         Title = obj.getTitle();
         plot = obj.getPlot();
@@ -64,6 +72,21 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         SetToolbar();
         setView();
+        Cbfav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Toast.makeText(DetailActivity.this, ""+isChecked, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        TextView t=new TextView(this);
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        t.setPadding(20,20,20,20);
+        t.setLayoutParams(params);
+        t.setText("Trailer 1");
+        rootview.addView(t);
+
+
 
     }
 }

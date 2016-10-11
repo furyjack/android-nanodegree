@@ -75,14 +75,28 @@
 
                     />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_Time"
+                    android:text="120 min"
+                    android:textSize="25sp"
+                    android:paddingLeft="20dp"
+                    android:textStyle="italic"
+                    />
+
                 <CheckBox
+                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/starstyle"
+                    android:id="@+id/cb_fav"
                     android:layout_marginLeft="40dp"
                     android:background="@android:drawable/btn_star"
 
                     />
+
+
             </LinearLayout>
         </LinearLayout>
 
@@ -106,6 +120,17 @@
             android:background="#000000"
 
             />
+
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trailers:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_marginLeft="8dp"
+            />
+
 
     </LinearLayout>
 
