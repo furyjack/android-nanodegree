@@ -118,6 +118,7 @@ public class Movie implements Parcelable{
         dest.writeString(Title);
         dest.writeString(rating);
         dest.writeString(release_date);
+        dest.writeString(movie_id);
 
     }
 
@@ -129,6 +130,7 @@ public class Movie implements Parcelable{
         Title=in.readString();
         rating=in.readString();
         release_date=in.readString();
+        movie_id=in.readString();
 
     }
 }

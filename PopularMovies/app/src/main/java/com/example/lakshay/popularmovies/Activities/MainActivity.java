@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements FetchMovieTask.Ta
         super.onResume();
         String choice = getPref();
         progressBar.setVisibility(View.VISIBLE);
-        if(save_state==null)
         save_state = getIntent().getExtras();
         if (choice.equals(prev_pref) && save_state != null && save_state.containsKey("mlist")) {
             setOldListView();
