@@ -92,7 +92,7 @@ public class DetailActivity extends AppCompatActivity {
 
         }
 
-        
+
 
 
        // rootview.addView(trailer_list);

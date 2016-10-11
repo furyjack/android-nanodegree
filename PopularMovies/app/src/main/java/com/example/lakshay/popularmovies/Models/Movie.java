@@ -4,6 +4,8 @@ package com.example.lakshay.popularmovies.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 public class Movie implements Parcelable{
 
     private String imagepath;
@@ -11,6 +13,33 @@ public class Movie implements Parcelable{
     private String Title;
     private String rating;
     private String release_date;
+    private String movie_id;
+    private ArrayList<String>trailers;
+    private ArrayList<String>Reviews;
+
+    public ArrayList<String> getReviews() {
+        return Reviews;
+    }
+
+    public void setReviews(ArrayList<String> reviews) {
+        Reviews = reviews;
+    }
+
+    public ArrayList<String> getTrailers() {
+        return trailers;
+    }
+
+    public void setTrailers(ArrayList<String> trailers) {
+        this.trailers = trailers;
+    }
+
+    public String getMovie_id() {
+        return movie_id;
+    }
+
+    public void setMovie_id(String movie_id) {
+        this.movie_id = movie_id;
+    }
 
     private Movie(Parcel in)
     {
