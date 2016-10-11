@@ -4,7 +4,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -79,12 +80,22 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        TextView t=new TextView(this);
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        t.setPadding(20,20,20,20);
-        t.setLayoutParams(params);
-        t.setText("Trailer 1");
-        rootview.addView(t);
+        LayoutInflater inflater=getLayoutInflater();
+        for(int i=1;i<4;i++) {
+
+
+            View view=inflater.inflate(R.layout.trailerlistitem,null);
+            TextView t= (TextView) view.findViewById(R.id.tv_trailerno);
+            String s="Trailer " + i;
+            t.setText(s);
+            rootview.addView(view);
+
+        }
+
+        
+
+
+       // rootview.addView(trailer_list);
 
 
 
