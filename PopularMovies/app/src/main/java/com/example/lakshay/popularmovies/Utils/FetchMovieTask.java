@@ -91,8 +91,10 @@ public class FetchMovieTask extends AsyncTask<String,Void,ArrayList<Movie>>{
                 String rdate=o.getString("release_date");
                 String rating=o.getString("vote_average");
                 String plot=o.getString("overview");
+                String id=Integer.toString(o.getInt("id"));
 
                 Movie obj= new Movie(imgp,plot,title,rating,rdate);
+                obj.setMovie_id(id);
                 mlist.add(obj);
             }
         } catch (JSONException e) {
