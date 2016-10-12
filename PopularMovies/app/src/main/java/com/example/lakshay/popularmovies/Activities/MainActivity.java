@@ -9,12 +9,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.example.lakshay.popularmovies.Fragments.DetailFragment;
 import com.example.lakshay.popularmovies.R;
 
 public class MainActivity extends AppCompatActivity  {
 
 
     Toolbar mtoolbar;
+    boolean mtwopane;
 
     private void SetToolbar() {
         mtoolbar = (Toolbar) findViewById(R.id.tl_main);
@@ -32,6 +34,21 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SetToolbar();
+        if(findViewById(R.id.fragment_detail)!=null)
+        {
+            mtwopane=true;
+            if(savedInstanceState==null)
+            {
+                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,new DetailFragment()).commit();
+            }
+
+
+        }
+        else
+        {
+            mtwopane=false;
+            
+        }
 
     }
 

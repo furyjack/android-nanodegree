@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+<LinearLayout
+    android:baselineAligned="false"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="100"
+    >
+
+    <fragment
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="55"
+        android:name="com.example.lakshay.popularmovies.Fragments.MainFragment"
+        android:id="@+id/main_fragment"
+        tools:layout="@layout/fragment_main" />
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="45"
+        android:id="@+id/fragment_detail"
+
+        >
+
+    </FrameLayout>
+
+
+
+
+</LinearLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/tb_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+
+        >
+        </android.support.v7.widget.Toolbar>
+    </FrameLayout>
