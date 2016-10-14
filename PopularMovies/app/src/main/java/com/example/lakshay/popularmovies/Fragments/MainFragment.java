@@ -3,7 +3,6 @@ package com.example.lakshay.popularmovies.Fragments;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -20,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 
-import com.example.lakshay.popularmovies.Activities.DetailActivity;
 import com.example.lakshay.popularmovies.Adapters.MovieAdapter;
 import com.example.lakshay.popularmovies.Models.Movie;
 import com.example.lakshay.popularmovies.R;
@@ -35,7 +33,7 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
 
     GridView Gvpos;
     MovieAdapter adapter;
-    ArrayList<Movie> mlist;
+   public ArrayList<Movie> mlist;
     Toolbar mtoolbar;
     ProgressBar progressBar;
     SharedPreferences sp;
@@ -44,6 +42,7 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
     Bundle save_state = null;
     View rootview;
     onMovieclickListner mlistner=null;
+    int mposition=-1;
 
 
     public void setListner(onMovieclickListner listner)
@@ -65,7 +64,7 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
             final Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
 
             int returnVal = p1.waitFor();
-            return (returnVal == 1);
+            return (returnVal == 0);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block
@@ -82,6 +81,7 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                mlistner.onMovieClicked(mlist.get(position));
+                mposition=position;
 
 
             }
@@ -99,14 +99,13 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
         Gvpos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getContext(), DetailActivity.class);
-                i.putExtra("object", mlist.get(position));
-                startActivity(i);
-
+                mlistner.onMovieClicked(mlist.get(position));
+                mposition=position;
 
             }
         });
         progressBar.setVisibility(View.INVISIBLE);
+        Gvpos.smoothScrollToPosition(mposition);
 
 
     }
@@ -155,6 +154,8 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
         progressBar = (ProgressBar) rootview.findViewById(R.id.pbar);
         prev_pref=getPref();
         save_state=savedInstanceState;
+        if(save_state!=null)
+            mposition=save_state.getInt("pos");
         return rootview;
     }
 
@@ -196,6 +197,7 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelableArrayList("mlist",mlist);
+        outState.putInt("pos",mposition);
         super.onSaveInstanceState(outState);
     }
 

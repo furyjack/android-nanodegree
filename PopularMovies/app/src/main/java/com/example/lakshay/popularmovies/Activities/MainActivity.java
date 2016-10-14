@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import com.example.lakshay.popularmovies.Fragments.DetailFragment;
 import com.example.lakshay.popularmovies.Fragments.MainFragment;
+import com.example.lakshay.popularmovies.Fragments.placeholderfrag;
 import com.example.lakshay.popularmovies.Models.Movie;
 import com.example.lakshay.popularmovies.R;
 
@@ -78,15 +79,8 @@ public class MainActivity extends AppCompatActivity  {
 
             if(savedInstanceState==null)
             {
-                final  DetailFragment d=new DetailFragment();
-                d.setAttachListner(new DetailFragment.onAttachListner() {
-                    @Override
-                    public void onattach() {
-                        d.setArgument(null);
 
-                    }
-                });
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail,d).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail,new placeholderfrag()).commit();
             }
 
 
@@ -119,6 +113,7 @@ public class MainActivity extends AppCompatActivity  {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 
 }

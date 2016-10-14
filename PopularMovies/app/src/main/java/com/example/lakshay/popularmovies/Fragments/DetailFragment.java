@@ -180,7 +180,7 @@ public class DetailFragment extends Fragment {
 
     public interface onAttachListner
     {
-        public void onattach();
+         void onattach();
     }
 
 

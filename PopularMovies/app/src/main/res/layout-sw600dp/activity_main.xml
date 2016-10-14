@@ -15,15 +15,16 @@
     <fragment
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="55"
+        android:layout_weight="45"
         android:name="com.example.lakshay.popularmovies.Fragments.MainFragment"
         android:id="@+id/main_fragment"
         tools:layout="@layout/fragment_main" />
 
     <FrameLayout
+        android:layout_marginTop="55dp"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="45"
+        android:layout_weight="55"
         android:id="@+id/fragment_detail"
 
         >
