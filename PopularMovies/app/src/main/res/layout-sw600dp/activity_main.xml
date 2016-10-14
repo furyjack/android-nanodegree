@@ -36,7 +36,7 @@
 </LinearLayout>
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/tb_detail"
+        android:id="@+id/tl_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"

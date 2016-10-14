@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.example.lakshay.popularmovies.Fragments.DetailFragment;
 import com.example.lakshay.popularmovies.R;
 
 
 public class DetailActivity extends AppCompatActivity {
 
    Toolbar mtoolbar;
+    DetailFragment Dfrag;
 
 
     private void SetToolbar() {
@@ -18,6 +20,7 @@ public class DetailActivity extends AppCompatActivity {
         mtoolbar.canShowOverflowMenu();
         mtoolbar.setTitle("Movie Detail");
         setSupportActionBar(mtoolbar);
+        if(getSupportActionBar()!=null)
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
@@ -33,6 +36,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         SetToolbar();
+        Dfrag= (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail);
+        Dfrag.setArgument(getIntent().getExtras());
 
     }
 

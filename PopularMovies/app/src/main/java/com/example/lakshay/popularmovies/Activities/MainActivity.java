@@ -10,6 +10,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.lakshay.popularmovies.Fragments.DetailFragment;
+import com.example.lakshay.popularmovies.Fragments.MainFragment;
+import com.example.lakshay.popularmovies.Models.Movie;
 import com.example.lakshay.popularmovies.R;
 
 public class MainActivity extends AppCompatActivity  {
@@ -17,6 +19,8 @@ public class MainActivity extends AppCompatActivity  {
 
     Toolbar mtoolbar;
     boolean mtwopane;
+    MainFragment mainfrag;
+    MainFragment.onMovieclickListner listner;
 
     private void SetToolbar() {
         mtoolbar = (Toolbar) findViewById(R.id.tl_main);
@@ -34,12 +38,36 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SetToolbar();
+        mainfrag=(MainFragment)getSupportFragmentManager().findFragmentById(R.id.main_fragment);
+        listner=new MainFragment.onMovieclickListner() {
+            @Override
+            public void onMovieClicked(Movie obj) {
+
+                if(mtwopane)
+                {
+                    DetailFragment d=new DetailFragment();
+                    Bundle b=new Bundle();
+                    b.putParcelable("object",obj);
+                    d.setArgument(b);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail,d).commit();
+                }
+                else
+                {
+                    startActivity(new Intent(getApplicationContext(),DetailActivity.class).putExtra("object",obj));
+
+                }
+
+
+            }
+        };
+        mainfrag.setListner(listner);
+
         if(findViewById(R.id.fragment_detail)!=null)
         {
             mtwopane=true;
             if(savedInstanceState==null)
             {
-                getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,new DetailFragment()).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail,new DetailFragment()).commit();
             }
 
 

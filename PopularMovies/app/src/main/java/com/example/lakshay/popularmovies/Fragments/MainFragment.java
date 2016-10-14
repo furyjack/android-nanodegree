@@ -43,6 +43,13 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
     String prev_pref = "1";
     Bundle save_state = null;
     View rootview;
+    onMovieclickListner mlistner=null;
+
+
+    public void setListner(onMovieclickListner listner)
+    {
+        mlistner=listner;
+    }
 
 
     private Boolean isNetworkAvailable() {
@@ -74,9 +81,7 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
         Gvpos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getContext(), DetailActivity.class);
-                i.putExtra("object", mlist.get(position));
-                startActivity(i);
+               mlistner.onMovieClicked(mlist.get(position));
 
 
             }
@@ -199,6 +204,12 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
     public void processFinish(ArrayList<Movie> output) {
         mlist=output;
         setListView();
+
+    }
+
+   public interface onMovieclickListner
+    {
+        void onMovieClicked(Movie obj);
 
     }
 }
