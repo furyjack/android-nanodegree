@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity  {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         SetToolbar();
@@ -70,9 +70,12 @@ public class MainActivity extends AppCompatActivity  {
         };
         mainfrag.setListner(listner);
 
+
         if(findViewById(R.id.fragment_detail)!=null)
         {
             mtwopane=true;
+
+
             if(savedInstanceState==null)
             {
                 final  DetailFragment d=new DetailFragment();
@@ -87,9 +90,12 @@ public class MainActivity extends AppCompatActivity  {
             }
 
 
+
         }
         else
         {
+
+
             mtwopane=false;
             
         }

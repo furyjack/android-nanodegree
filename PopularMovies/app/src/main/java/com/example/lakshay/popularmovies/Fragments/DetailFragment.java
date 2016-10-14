@@ -166,7 +166,13 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         base=inflater.inflate(R.layout.fragment_detail,container,false);
+        if(listner!=null)
         listner.onattach();
+        if(savedInstanceState!=null)
+        {
+            this.setArgument(savedInstanceState.getBundle("extra"));
+
+        }
 
         return base;
      
@@ -175,6 +181,14 @@ public class DetailFragment extends Fragment {
     public interface onAttachListner
     {
         public void onattach();
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+
+        outState.putBundle("extra",extra);
+        super.onSaveInstanceState(outState);
     }
 
 }
