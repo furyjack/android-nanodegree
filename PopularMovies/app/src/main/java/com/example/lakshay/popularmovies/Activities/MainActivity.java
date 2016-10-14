@@ -45,11 +45,19 @@ public class MainActivity extends AppCompatActivity  {
 
                 if(mtwopane)
                 {
-                    DetailFragment d=new DetailFragment();
-                    Bundle b=new Bundle();
+                  final  DetailFragment d=new DetailFragment();
+                  final  Bundle b=new Bundle();
+                    d.setAttachListner(new DetailFragment.onAttachListner() {
+                        @Override
+                        public void onattach() {
+                            d.setArgument(b);
+
+                        }
+                    });
                     b.putParcelable("object",obj);
-                    d.setArgument(b);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail,d).commit();
+
+
                 }
                 else
                 {
@@ -67,7 +75,15 @@ public class MainActivity extends AppCompatActivity  {
             mtwopane=true;
             if(savedInstanceState==null)
             {
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail,new DetailFragment()).commit();
+                final  DetailFragment d=new DetailFragment();
+                d.setAttachListner(new DetailFragment.onAttachListner() {
+                    @Override
+                    public void onattach() {
+                        d.setArgument(null);
+
+                    }
+                });
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_detail,d).commit();
             }
 
 

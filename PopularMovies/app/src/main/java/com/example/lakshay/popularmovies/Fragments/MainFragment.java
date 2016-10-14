@@ -65,7 +65,7 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
             final Process p1 = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.com");
 
             int returnVal = p1.waitFor();
-            return (returnVal == 0);
+            return (returnVal == 1);
 
         } catch (Exception e) {
             // TODO Auto-generated catch block

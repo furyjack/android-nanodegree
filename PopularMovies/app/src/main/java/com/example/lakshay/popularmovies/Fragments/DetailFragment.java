@@ -47,6 +47,13 @@ public class DetailFragment extends Fragment {
     LinearLayout rootview;
     View base;
     Bundle extra=null;
+    onAttachListner listner=null;
+
+    public void setAttachListner(onAttachListner listner)
+    {
+        this.listner=listner;
+
+    }
 
     public void setArgument(Bundle args)
     {
@@ -116,7 +123,7 @@ public class DetailFragment extends Fragment {
 
     private void setView() {
 
-        queue= Volley.newRequestQueue(getContext());
+        queue= Volley.newRequestQueue(getActivity().getApplicationContext());
         trailer_links=new ArrayList<>();
         rootview=(LinearLayout)base.findViewById(R.id.activity_detail);
         TvTitle = (TextView)base.findViewById(R.id.tv_title);
@@ -159,9 +166,15 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         base=inflater.inflate(R.layout.fragment_detail,container,false);
+        listner.onattach();
 
         return base;
      
+    }
+
+    public interface onAttachListner
+    {
+        public void onattach();
     }
 
 }
