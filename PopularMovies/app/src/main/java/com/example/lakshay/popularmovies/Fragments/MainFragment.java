@@ -116,7 +116,7 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
 
     private void setFavlistview()
     {
-        mlist.clear();
+        mlist=new ArrayList<>();
         SQLiteDatabase dbr= DatabaseCreator.openReadableDatabse(getContext());
         String projection[]={MovieContract.MovieTable.COLUMN_ID,MovieContract.MovieTable.COLUMN_NAME, MovieContract.MovieTable.COLUMN_DATE, MovieContract.MovieTable.COLUMN_PICURL, MovieContract.MovieTable.COLUMN_PLOT, MovieContract.MovieTable.COLUMN_RATING};
         Cursor c=dbr.query(MovieContract.MovieTable.Movie_Table_Name,projection,null,null,null,null,null);
