@@ -4,6 +4,8 @@ package com.example.lakshay.popularmovies.Fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -22,7 +24,9 @@ import android.widget.ProgressBar;
 import com.example.lakshay.popularmovies.Adapters.MovieAdapter;
 import com.example.lakshay.popularmovies.Models.Movie;
 import com.example.lakshay.popularmovies.R;
+import com.example.lakshay.popularmovies.Utils.DatabaseCreator;
 import com.example.lakshay.popularmovies.Utils.FetchMovieTask;
+import com.example.lakshay.popularmovies.Utils.MovieContract;
 
 import java.util.ArrayList;
 
@@ -110,6 +114,53 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
 
     }
 
+    private void setFavlistview()
+    {
+        mlist=new ArrayList<>();
+        SQLiteDatabase dbr= DatabaseCreator.openReadableDatabse(getContext());
+        String projection[]={MovieContract.MovieTable.COLUMN_ID,MovieContract.MovieTable.COLUMN_NAME, MovieContract.MovieTable.COLUMN_DATE, MovieContract.MovieTable.COLUMN_PICURL, MovieContract.MovieTable.COLUMN_PLOT, MovieContract.MovieTable.COLUMN_RATING};
+        Cursor c=dbr.query(MovieContract.MovieTable.Movie_Table_Name,projection,null,null,null,null,null);
+        while(c.moveToNext())
+        {
+            String id=c.getString(c.getColumnIndex(MovieContract.MovieTable.COLUMN_ID));
+            String title=c.getString(c.getColumnIndex(MovieContract.MovieTable.COLUMN_NAME));
+            String date=c.getString(c.getColumnIndex(MovieContract.MovieTable.COLUMN_DATE));
+            String picurl=c.getString(c.getColumnIndex(MovieContract.MovieTable.COLUMN_PICURL));
+            String plot=c.getString(c.getColumnIndex(MovieContract.MovieTable.COLUMN_PLOT));
+            String rating=c.getString(c.getColumnIndex(MovieContract.MovieTable.COLUMN_RATING));
+
+            Movie obj=new Movie(picurl,plot,title,rating,date);
+            obj.setMovie_id(id);
+
+            mlist.add(obj);
+
+
+
+
+        }
+        c.close();
+        Gvpos = (GridView) rootview.findViewById(R.id.gv_movpos);
+        adapter = new MovieAdapter(mlist, getContext());
+        Gvpos.setAdapter(adapter);
+        Gvpos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mlistner.onMovieClicked(mlist.get(position));
+                mposition=position;
+
+
+            }
+        });
+
+        progressBar.setVisibility(View.INVISIBLE);
+
+
+
+
+
+
+    }
+
     private String getPref() {
         sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         String choice = sp.getString(this.getString(R.string.list_key), "1");
@@ -165,6 +216,13 @@ public class MainFragment extends Fragment implements FetchMovieTask.TaskFinishe
         String choice = getPref();
         progressBar.setVisibility(View.VISIBLE);
         save_state = getActivity().getIntent().getExtras();
+        if(choice.equals("3"))
+        {
+            //set fav list view
+            setFavlistview();
+            prev_pref=choice;
+            return;
+        }
         if (choice.equals(prev_pref) && save_state != null && save_state.containsKey("mlist")) {
             setOldListView();
             prev_pref = choice;

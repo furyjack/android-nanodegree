@@ -1,7 +1,10 @@
 package com.example.lakshay.popularmovies.Fragments;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +27,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.lakshay.popularmovies.Models.Movie;
 import com.example.lakshay.popularmovies.R;
+import com.example.lakshay.popularmovies.Utils.DatabaseCreator;
+import com.example.lakshay.popularmovies.Utils.MovieContract;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -149,6 +155,74 @@ public class DetailFragment extends Fragment {
             prec = prec + "w320";
             posterpath = prec + posterpath.substring(ind + 4);
             Picasso.with(getContext()).load(posterpath).fit().into(IvPoster);
+            SQLiteDatabase db= DatabaseCreator.openReadableDatabse(getContext());
+            String projection[]={MovieContract.MovieTable.COLUMN_ID};
+            String selection = MovieContract.MovieTable.COLUMN_ID + " = ?";
+            String selection_Args[]={id};
+
+            Cursor c=db.query(MovieContract.MovieTable.Movie_Table_Name,projection,selection,selection_Args,null,null,null);
+            if(c.getCount()!=0)
+                Cbfav.setChecked(true);
+            c.close();
+
+            Cbfav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                    SQLiteDatabase db= DatabaseCreator.openReadableDatabse(getContext());
+                    String projection[]={MovieContract.MovieTable.COLUMN_ID};
+                    String selection = MovieContract.MovieTable.COLUMN_ID + " = ?";
+                    String selection_Args[]={id};
+
+                    Cursor c=db.query(MovieContract.MovieTable.Movie_Table_Name,projection,selection,selection_Args,null,null,null);
+
+                    if(isChecked)
+                    {
+
+                        if(c.getCount()==0)
+                        {
+                            c.close();
+                            SQLiteDatabase dbw=DatabaseCreator.openWriteableDatabse(getContext());
+                            ContentValues values=new ContentValues();
+                            values.put(MovieContract.MovieTable.COLUMN_ID,id);
+                            values.put(MovieContract.MovieTable.COLUMN_NAME,Title);
+                            values.put(MovieContract.MovieTable.COLUMN_DATE,date);
+                            values.put(MovieContract.MovieTable.COLUMN_PICURL,posterpath);
+                            values.put(MovieContract.MovieTable.COLUMN_PLOT,plot);
+                            String r=rating.substring(0,rating.indexOf("/"));
+                            values.put(MovieContract.MovieTable.COLUMN_RATING,r);
+                            values.put(MovieContract.MovieTable.COLUMN_ISFAV,1);
+
+                            dbw.insert(MovieContract.MovieTable.Movie_Table_Name,null,values);
+                            Toast.makeText(getContext(), "database insert success", Toast.LENGTH_SHORT).show();
+
+
+                        }
+
+                        //add movie to fav if not yet added
+
+                    }
+                    else
+                    {
+                        if(c.getCount()!=0)
+                        {
+
+                            SQLiteDatabase dbw=DatabaseCreator.openWriteableDatabse(getContext());
+                            dbw.delete(MovieContract.MovieTable.Movie_Table_Name,selection,selection_Args);
+                            Toast.makeText(getContext(), "database delete success", Toast.LENGTH_SHORT).show();
+
+
+
+                        }
+
+                        //delete movie from database if already present
+
+                    }
+
+                }
+            });
+
+
         }
         else
         {
@@ -173,6 +247,7 @@ public class DetailFragment extends Fragment {
             this.setArgument(savedInstanceState.getBundle("extra"));
 
         }
+
 
         return base;
      
