@@ -189,7 +189,8 @@ public class DetailFragment extends Fragment {
                             values.put(MovieContract.MovieTable.COLUMN_DATE,date);
                             values.put(MovieContract.MovieTable.COLUMN_PICURL,posterpath);
                             values.put(MovieContract.MovieTable.COLUMN_PLOT,plot);
-                            values.put(MovieContract.MovieTable.COLUMN_RATING,rating);
+                            String r=rating.substring(0,rating.indexOf("/"));
+                            values.put(MovieContract.MovieTable.COLUMN_RATING,r);
                             values.put(MovieContract.MovieTable.COLUMN_ISFAV,1);
 
                             dbw.insert(MovieContract.MovieTable.Movie_Table_Name,null,values);
