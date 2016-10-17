@@ -36,7 +36,7 @@ public class MovieContract  extends DBconstants{
             + MovieTable.COLUMN_PICURL + TYPE_TEXT + COMMA
             + MovieTable.COLUMN_PLOT + TYPE_TEXT + COMMA
             + MovieTable.COLUMN_RATING + TYPE_TEXT + COMMA
-            + MovieTable.COLUMN_ISFAV + TYPE_INT + COMMA
+            + MovieTable.COLUMN_ISFAV + TYPE_INT
             + RBR + ";";
 
 
