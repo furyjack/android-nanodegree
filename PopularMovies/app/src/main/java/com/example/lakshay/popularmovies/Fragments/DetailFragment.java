@@ -155,6 +155,15 @@ public class DetailFragment extends Fragment {
             prec = prec + "w320";
             posterpath = prec + posterpath.substring(ind + 4);
             Picasso.with(getContext()).load(posterpath).fit().into(IvPoster);
+            SQLiteDatabase db= DatabaseCreator.openReadableDatabse(getContext());
+            String projection[]={MovieContract.MovieTable.COLUMN_ID};
+            String selection = MovieContract.MovieTable.COLUMN_ID + " = ?";
+            String selection_Args[]={id};
+
+            Cursor c=db.query(MovieContract.MovieTable.Movie_Table_Name,projection,selection,selection_Args,null,null,null);
+            if(c.getCount()!=0)
+                Cbfav.setChecked(true);
+            c.close();
 
             Cbfav.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
