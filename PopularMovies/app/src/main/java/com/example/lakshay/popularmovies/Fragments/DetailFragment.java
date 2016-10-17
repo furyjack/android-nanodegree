@@ -40,15 +40,28 @@ import java.util.ArrayList;
 
 public class DetailFragment extends Fragment {
 
+    private  static class Review
+    {
+        String author,review;
+
+        public Review(String author, String review) {
+            this.author = author;
+            this.review = review;
+        }
+    }
+
+
     TextView TvTitle, Tvplot, Tvdate, Tvrating;
     String id;
     ImageView IvPoster;
     private static final String trailerreqp="https://api.themoviedb.org/3/movie/";
     private static final String trailerreqs="/videos?api_key=a444d7a7a662a5a702515b3735ee4f49&language=en-US";
+    private static final String reviews="/reviews?api_key=a444d7a7a662a5a702515b3735ee4f49&language=en-US";
     String Title, plot, posterpath, date, rating;
     Toolbar mtoolbar;
     RequestQueue queue;
     ArrayList<String> trailer_links;
+    ArrayList<Review> Reviews;
     CheckBox Cbfav;
     LinearLayout rootview;
     View base;
@@ -108,6 +121,8 @@ public class DetailFragment extends Fragment {
 
                     }
 
+                    rootview.addView(inflater.inflate(R.layout.reviewtext,null));
+
 
                 }
             }, new Response.ErrorListener() {
@@ -119,7 +134,55 @@ public class DetailFragment extends Fragment {
                 }
             });
 
+            final StringRequest rev_req = new StringRequest(Request.Method.GET, trailerreqp + id + reviews, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONObject file = new JSONObject(response);
+                        JSONArray results = file.getJSONArray("results");
+                        for (int i = 0; i < results.length(); i++) {
+                            JSONObject obj = results.getJSONObject(i);
+                            String author = obj.getString("author");
+                            String revi=obj.getString("content");
+                            Reviews.add(new Review(author,revi));
+
+
+                        }
+
+                    } catch (JSONException e) {
+                        Toast.makeText(getContext(), "Json error", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    for (int i = 1; i < Reviews.size() + 1; i++) {
+
+
+                        View view = inflater.inflate(R.layout.reviewlistitem, null);
+                        TextView author = (TextView) view.findViewById(R.id.tv_rev_name);
+                        TextView Tvrev=(TextView)view.findViewById(R.id.tv_rev_text);
+
+                        author.setText(Reviews.get(i-1).author+":");
+                        Tvrev.setText(Reviews.get(i-1).review);
+                        rootview.addView(view);
+
+                    }
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    Toast.makeText(getContext(), "volley error", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
             queue.add(request);
+            queue.add(rev_req);
 
 
         }
@@ -131,6 +194,7 @@ public class DetailFragment extends Fragment {
 
         queue= Volley.newRequestQueue(getActivity().getApplicationContext());
         trailer_links=new ArrayList<>();
+        Reviews=new ArrayList<>();
         rootview=(LinearLayout)base.findViewById(R.id.activity_detail);
         TvTitle = (TextView)base.findViewById(R.id.tv_title);
         Tvplot = (TextView) base.findViewById(R.id.tv_plot);
