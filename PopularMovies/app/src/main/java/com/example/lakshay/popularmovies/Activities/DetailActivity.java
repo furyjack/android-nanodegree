@@ -37,6 +37,7 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
         SetToolbar();
         Dfrag= (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_detail);
+        if(savedInstanceState==null)
         Dfrag.setArgument(getIntent().getExtras());
 
     }

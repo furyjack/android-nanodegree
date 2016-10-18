@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,6 +52,8 @@ public class DetailFragment extends Fragment {
     }
 
 
+
+
     TextView TvTitle, Tvplot, Tvdate, Tvrating;
     String id;
     ImageView IvPoster;
@@ -67,6 +70,7 @@ public class DetailFragment extends Fragment {
     View base;
     Bundle extra=null;
     onAttachListner listner=null;
+    Boolean review_expanded=false;
 
     public void setAttachListner(onAttachListner listner)
     {
@@ -81,59 +85,6 @@ public class DetailFragment extends Fragment {
         setView();
 
         if(extra!=null) {
-            final StringRequest request = new StringRequest(Request.Method.GET, trailerreqp + id + trailerreqs, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-
-                    try {
-                        JSONObject file = new JSONObject(response);
-                        JSONArray results = file.getJSONArray("results");
-                        for (int i = 0; i < results.length(); i++) {
-                            JSONObject obj = results.getJSONObject(i);
-                            String type = obj.getString("type");
-                            if (type.equals("Trailer") || type.equals("trailer")) {
-                                String key = obj.getString("key");
-                                trailer_links.add("https://www.youtube.com/watch?v=" + key);
-                            }
-                        }
-
-                    } catch (JSONException e) {
-                        Toast.makeText(getContext(), "Json error", Toast.LENGTH_SHORT).show();
-                        e.printStackTrace();
-                    }
-
-                    LayoutInflater inflater = getActivity().getLayoutInflater();
-                    for (int i = 1; i < trailer_links.size() + 1; i++) {
-
-
-                        View view = inflater.inflate(R.layout.trailerlistitem, null);
-                        TextView t = (TextView) view.findViewById(R.id.tv_trailerno);
-                        String s = "Trailer " + i;
-                        final int finalI = i;
-                        view.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer_links.get(finalI - 1))));
-                            }
-                        });
-                        t.setText(s);
-                        rootview.addView(view);
-
-                    }
-
-                    rootview.addView(inflater.inflate(R.layout.reviewtext,null));
-
-
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-
-                    Toast.makeText(getContext(), "volley error", Toast.LENGTH_SHORT).show();
-
-                }
-            });
-
             final StringRequest rev_req = new StringRequest(Request.Method.GET, trailerreqp + id + reviews, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -181,8 +132,79 @@ public class DetailFragment extends Fragment {
             });
 
 
-            queue.add(request);
-            queue.add(rev_req);
+            final StringRequest request = new StringRequest(Request.Method.GET, trailerreqp + id + trailerreqs, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+
+                    try {
+                        JSONObject file = new JSONObject(response);
+                        JSONArray results = file.getJSONArray("results");
+                        for (int i = 0; i < results.length(); i++) {
+                            JSONObject obj = results.getJSONObject(i);
+                            String type = obj.getString("type");
+                            if (type.equals("Trailer") || type.equals("trailer")) {
+                                String key = obj.getString("key");
+                                trailer_links.add("https://www.youtube.com/watch?v=" + key);
+                            }
+                        }
+
+                    } catch (JSONException e) {
+                        Toast.makeText(getContext(), "Json error", Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
+                    }
+
+
+                    LayoutInflater inflater = getActivity().getLayoutInflater();
+                    for (int i = 1; i < trailer_links.size() + 1; i++) {
+
+
+                        View view = inflater.inflate(R.layout.trailerlistitem, null);
+                        TextView t = (TextView) view.findViewById(R.id.tv_trailerno);
+                        String s = "Trailer " + i;
+                        final int finalI = i;
+                        view.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer_links.get(finalI - 1))));
+                            }
+                        });
+                        t.setText(s);
+                        rootview.addView(view);
+
+                    }
+                    View temp=inflater.inflate(R.layout.reviewtext,null);
+                    rootview.addView(temp);
+                    ImageButton btndrop= (ImageButton) temp.findViewById(R.id.btn_drop);
+                    btndrop.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(!review_expanded)
+                            {
+                                queue.add(rev_req);
+                                review_expanded=true;
+                                Toast.makeText(getContext(), "Loading....", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
+
+
+
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    Toast.makeText(getContext(), "volley error", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+
+
+            queue.add(request.setSequence(0));
+
+
 
 
         }
@@ -211,6 +233,8 @@ public class DetailFragment extends Fragment {
             date = obj.getRelease_date().substring(0, 4);
             rating = obj.getRating() + "/10.0";
             TvTitle.setText(Title);
+
+
             Tvplot.setText(plot);
             Tvdate.setText(date);
             Tvrating.setText(rating);
@@ -304,6 +328,7 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         base=inflater.inflate(R.layout.fragment_detail,container,false);
+
         if(listner!=null)
         listner.onattach();
         if(savedInstanceState!=null)
@@ -321,6 +346,7 @@ public class DetailFragment extends Fragment {
     {
          void onattach();
     }
+
 
 
     @Override
